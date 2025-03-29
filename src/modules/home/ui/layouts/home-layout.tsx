@@ -17,7 +17,5 @@ export const HomeLayout = ({ children }: HomeLayoutProps) => {
         </div>
       </div>
     </SidebarProvider>
-
-    // STOPPED 30:44
   );
 };
