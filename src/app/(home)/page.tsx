@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export default function Home() {
-  return <div>I will upload vidoes in the future!</div>;
+  return <div></div>;
 }
