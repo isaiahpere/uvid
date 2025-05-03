@@ -1,17 +1,18 @@
 import { z } from "zod";
-import { baseProcedure, createTRPCRouter } from "../init";
-import { TRPCError } from "@trpc/server";
+import { createTRPCRouter, protectedProcedure } from "../init";
 export const appRouter = createTRPCRouter({
-  hello: baseProcedure
+  hello: protectedProcedure
     .input(
       z.object({
         text: z.string(),
       })
     )
     .query((opts) => {
-      throw new TRPCError({ code: "TIMEOUT" });
+      console.log("@@@@@@")
+      console.log("DB USER")
+      console.log({dbUser: opts.ctx.user});
       return {
-        greeting: `hello ${opts.input.text}`,
+        greeting: `hello there ${opts.input.text}`,
       };
     }),
 });

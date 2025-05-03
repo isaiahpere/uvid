@@ -1,22 +1,19 @@
 import { HydrateClient, trpc } from "@/trpc/server";
+import { PageClient } from "./client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-import { PageClient } from "./client";
-
 const Home = async () => {
-  void trpc.hello.prefetch({ text: "Isa" }); // uses useSuspenseQuery internally
+  // prefetch must be accompnay with useSuspenseQuery in the client component.
+  void trpc.hello.prefetch({text: "Isaac"});
   return (
-    <div>
-      <div>This is where I should load vidos</div>
-      <HydrateClient>
-        <Suspense fallback={<p>Loading...</p>}>
-          <ErrorBoundary fallback={<p>Error...</p>}>
-            <PageClient />
-          </ErrorBoundary>
-        </Suspense>
-      </HydrateClient>
-    </div>
+    <HydrateClient>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <PageClient />
+        </ErrorBoundary>
+      </Suspense>
+    </HydrateClient>
   );
 };
 
