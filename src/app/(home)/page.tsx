@@ -1,20 +1,24 @@
+import { HomeView } from "@/modules/home/ui/views/home-view";
 import { HydrateClient, trpc } from "@/trpc/server";
-import { PageClient } from "./client";
-import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 
-const Home = async () => {
-  // prefetch must be accompnay with useSuspenseQuery in the client component.
-  void trpc.hello.prefetch({text: "Isa"});
+// we need to use "force-dynamic" to ensure vercel does not consider this page as static.
+// This is necessary for prefetching data on the server side using `prefetch`.
+export const dynamic = "force-dynamic";
+
+interface PageProps {
+  searchParams: Promise<{ categoryId?: string }>;
+}
+
+const Page = async ({ searchParams }: PageProps) => {
+  const { categoryId } = await searchParams;
+  // prefetch must be accompany with useSuspenseQuery in the client component.
+  // prefetch --> HydrateClient --> useSuspenseQuery
+  void trpc.categories.getMany.prefetch();
   return (
     <HydrateClient>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ErrorBoundary fallback={<div>Something went wrong</div>}>
-          <PageClient />
-        </ErrorBoundary>
-      </Suspense>
+      <HomeView categoryId={categoryId} />
     </HydrateClient>
   );
 };
 
-export default Home;
+export default Page;
