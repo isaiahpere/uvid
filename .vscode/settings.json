@@ -2,4 +2,5 @@
   // TRPC recommend settings to fix "any" type showing for everything
   "typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
+  // "tailwindCSS.experimental.configFile": "./src/app/globals.css" // for tailwindcss v4
 }

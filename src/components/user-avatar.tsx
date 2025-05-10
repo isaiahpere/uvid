@@ -11,5 +11,32 @@ const avatarVariants = cva("", {
       lg: "h-10 w-10",
       xl: "h-[160px] w-[160px]",
     },
+    defaultVariants: {
+      size: "default",
+    },
   },
 });
+
+interface UserAvatarProps extends VariantProps<typeof avatarVariants> {
+  imageUrl: string;
+  name: string;
+  className?: string;
+  onClick?: () => void;
+}
+
+export const UserAvatar = ({
+  imageUrl,
+  name,
+  size,
+  className,
+  onClick,
+}: UserAvatarProps) => {
+  return (
+    <Avatar
+      className={cn(avatarVariants({ size, className }))}
+      onClick={onClick}
+    >
+      <AvatarImage src={imageUrl} alt={name} />
+    </Avatar>
+  );
+};
