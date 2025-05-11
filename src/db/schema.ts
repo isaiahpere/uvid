@@ -3,7 +3,7 @@
  *
  * Run Command "bunx drizzle-kit studio". This will open a GUI to view and manage your database schema.
  */
-
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -26,6 +26,11 @@ export const users = pgTable(
   (table) => [uniqueIndex("clerk_id_idx").on(table.clerkId)]
 );
 
+// https://orm.drizzle.team/docs/relations
+export const userRelations = relations(users, ({ many }) => ({
+  videos: many(videos),
+}));
+
 export const categories = pgTable(
   "categories",
   {
@@ -37,3 +42,37 @@ export const categories = pgTable(
   },
   (table) => [uniqueIndex("name_idx").on(table.name)]
 );
+// relations(users....)
+export const categoryRelations = relations(categories, ({ many }) => ({
+  videos: many(videos),
+}));
+
+export const videos = pgTable("videos", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  description: text("description"),
+  // foreign key to delete all videos if user is deleted
+  userId: uuid("user_id")
+    .references(() => users.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  categoryId: uuid("category_id").references(() => categories.id, {
+    onDelete: "set null",
+  }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// relations do not cause a change on schema when pushing via drizzle-kit push.
+// https://orm.drizzle.team/docs/relations#foreign-keys
+export const videoRelations = relations(videos, ({ one }) => ({
+  user: one(users, {
+    fields: [videos.userId],
+    references: [users.id],
+  }),
+  category: one(categories, {
+    fields: [videos.categoryId],
+    references: [categories.id],
+  }),
+}));
