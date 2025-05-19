@@ -4,7 +4,7 @@ import { trpc } from "@/trpc/client";
 import { DEFAULT_LIMIT } from "@/constants";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { InfiniteScroll } from "@/components/infiinte-scroll";
+import { InfiniteScroll } from "@/components/infinite-scroll";
 
 export const VideosSection = () => {
   return (
