@@ -10,7 +10,7 @@ export const videosRouter = createTRPCRouter({
 
     const upload = await mux.video.uploads.create({
       new_asset_settings: {
-        passthrough: userId, // stor userId to include in Mux webhook response
+        passthrough: userId, // store userId to include in Mux webhook response
         playback_policies: ["public"],
       },
       cors_origin: "*", // TODO: in production, set to prod URL
@@ -21,9 +21,13 @@ export const videosRouter = createTRPCRouter({
       .values({
         userId,
         title: "Untitled",
+        muxStatus: "waiting",
+        muxUploadId: upload.id,
       })
       .returning();
 
     return { video: video, url: upload.url };
   }),
 });
+
+// 23:50

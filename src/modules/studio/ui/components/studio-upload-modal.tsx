@@ -21,6 +21,8 @@ export const StudioUploadModal = () => {
       );
     },
   });
+
+  console.log(create?.data?.url);
   return (
     <>
       <ResponsiveModal
