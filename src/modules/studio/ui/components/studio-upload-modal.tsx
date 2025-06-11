@@ -35,7 +35,6 @@ export const StudioUploadModal = () => {
         ) : (
           <Loader2Icon />
         )}
-        This will be an upload modal
       </ResponsiveModal>
       <Button
         variant={"secondary"}
